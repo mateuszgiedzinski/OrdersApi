@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\..\app.props" />
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\shared\abstractions\MagCoders.Orders.Shared.Abstractions.csproj" />
+      <ProjectReference Include="..\..\..\shared\infrastructure\MagCoders.Orders.Shared.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

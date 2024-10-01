@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\..\app.props" />
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\shared\infrastructure\MagCoders.Orders.Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\contracts\MagCoders.Orders.Modules.Stock.Contracts.csproj" />
+    </ItemGroup>
+</Project>

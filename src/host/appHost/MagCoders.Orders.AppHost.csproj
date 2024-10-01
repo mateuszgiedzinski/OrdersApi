@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\app.props" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>6e983bc3-f503-4c9b-a4f1-f7f68e7bdcae</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+    <PackageReference Include="Jerry.WaitForDependencies.Aspire.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\api\app\MagCoders.Orders.Api.csproj" />
+    <ProjectReference Include="..\..\webApp\app\MagCoders.Orders.Ui.csproj" />
+  </ItemGroup>
+
+</Project>

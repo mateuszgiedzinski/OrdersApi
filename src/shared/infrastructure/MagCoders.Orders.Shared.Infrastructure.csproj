@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\app.props" />
+	<ItemGroup>
+	  <PackageReference Include="MediatR" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\abstractions\MagCoders.Orders.Shared.Abstractions.csproj" />
+	  <ProjectReference Include="..\domain\MagCoders.Orders.Shared.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

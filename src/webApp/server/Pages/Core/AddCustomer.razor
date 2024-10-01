@@ -1,0 +1,87 @@
+@using FluentValidation
+@using MagCoders.Orders.Modules.Core.Contracts.Commands.Customers
+@using MagCoders.Orders.Shared.Abstractions.Validation
+@inject ISnackbar Snackbar
+@inject IValidator<CreateCustomer> validator
+@inject IHttpClientFactory httpClientFactory
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Create Customer
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@Model" @ref="@form" Validation="@validator.GetValidateFunc()" ValidationDelay="300">
+        <MudCardContent>
+            <MudTextField @bind-Value="Model.FirstName"
+                          For="@(() => Model.FirstName)"
+                          Immediate="true"
+                          Label="First name" />
+
+            <MudTextField @bind-Value="Model.SecondName"
+                          For="@(() => Model.SecondName)"
+                          Immediate="true"
+                          Label="Second name" />
+
+            <MudTextField @bind-Value="Model.LastName"
+                          For="@(() => Model.LastName)"
+                          Immediate="true"
+                          Label="Last name" />
+
+            <MudTextField @bind-Value="Model.EmailAddress"
+                          For="@(() => Model.EmailAddress)"
+                          Immediate="true"
+                          Label="Email address" />
+
+            <MudTextField @bind-Value="Model.CreditCardNumber"
+                          For="@(() => Model.CreditCardNumber)"
+                          Immediate="true"
+                          Label="Credit card number" />
+
+                <MudDatePicker @bind-Date="Model.BirthDate"
+                           Mask="@(new DateMask("0000-00-00"))" 
+                           DateFormat="yyyy-MM-dd" 
+                           Placeholder="ISO Date"
+                           For="@(() => Model.BirthDate)"
+                           Label="BirthDate"/>
+        </MudCardContent>
+    </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Create</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public CreateCustomer Model { get; set; } = new CreateCustomer()
+        {
+            Id = Guid.NewGuid(),
+            FirstName = string.Empty,
+            SecondName = null,
+            LastName = string.Empty,
+            CreditCardNumber = string.Empty,
+            EmailAddress = string.Empty,
+            BirthDate = DateTime.Now,
+        };
+
+
+    private MudForm form;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(Model));
+
+        }
+    }
+}

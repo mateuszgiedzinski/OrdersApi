@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\..\app.props" />
+  <ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\abstractions\MagCoders.Orders.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\shared\infrastructure\MagCoders.Orders.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\application\MagCoders.Orders.Modules.Core.Application.csproj" />
+    <ProjectReference Include="..\infrastructure\MagCoders.Orders.Modules.Core.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\..\app.props" />
+	<ItemGroup>
+	  <PackageReference Include="FluentValidation" />
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+	  <PackageReference Include="MediatR" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\abstractions\MagCoders.Orders.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\shared\infrastructure\MagCoders.Orders.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\domain\MagCoders.Orders.Modules.Stock.Domain.csproj" />
+    <ProjectReference Include="..\infrastructure\MagCoders.Orders.Modules.Stock.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

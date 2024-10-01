@@ -1,0 +1,90 @@
+@page "/customers"
+@using MagCoders.Orders.Modules.Core.Contracts.Commands.Customers
+@using MagCoders.Orders.Modules.Core.Contracts.Dto
+@inject IHttpClientFactory factory
+@inject IDialogService DialogService
+
+<PageTitle>Customers</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Customers</MudText>
+
+@if (items == null)
+
+{
+	<MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+	<MudIconButton OnClick="@AddItem" Color="@Color.Success" Icon="@Icons.Material.Filled.Add"></MudIconButton>
+	<MudIconButton OnClick="@RemoveItem" Color="@Color.Success" Icon="@Icons.Material.Filled.Remove" Disabled="@cantRemove"></MudIconButton>
+	<MudDataGrid Items="@items" MultiSelection="false">
+		<Columns>
+			<PropertyColumn Property="x => x.Name.FirstName" Title="First name" />
+			<PropertyColumn Property="x => x.Name.SecondName" Title="Second name" />
+			<PropertyColumn Property="x => x.Name.LastName" Title="Last name" />
+            <PropertyColumn Property="x => x.CreditCard.Number" Title="Credit card number" />
+            <PropertyColumn Property="x => x.EmailAddress " Title="Email address" />
+            <PropertyColumn Property="x => x.BirthDate" Format="dd-MM-yyyy" Title="Birth date" />
+            <PropertyColumn Property="x => x.Level.Name" Title="Level" />
+		</Columns>
+	</MudDataGrid>
+}
+
+@code {
+    private CustomerInfo[]? items;
+
+    private CustomerInfo? selectedItem;
+
+    private bool cantRemove => selectedItem == null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var client = factory.CreateClient("WebApi");
+        items = await client.GetFromJsonAsync<CustomerInfo[]>("customers");
+    }
+
+    protected async Task AddItem(MouseEventArgs e)
+    {
+        var dialog = await DialogService.ShowAsync<AddCustomer>("Add customer", new DialogOptions()
+        {
+            CloseButton = true,
+            FullScreen = true,
+            CloseOnEscapeKey = true,
+        });
+
+        var result = await dialog.Result;
+        if (result is not null && !result.Canceled)
+        {
+            items = null;
+            using var client = factory.CreateClient("WebApi");
+            var apiResult = await client.PostAsJsonAsync("customers", result.Data);
+            if (apiResult.IsSuccessStatusCode)
+            {
+                items = await client.GetFromJsonAsync<CustomerInfo[]>("customers");
+            }
+        }
+    }
+
+    protected async Task RemoveItem(MouseEventArgs e)
+    {
+        if (selectedItem is not null)
+        {
+            items = null;
+            using var client = factory.CreateClient("WebApi");
+            await client.DeleteAsync($"customers/{selectedItem.Id.Value}");
+            items = await client.GetFromJsonAsync<CustomerInfo[]>("customers");
+        }
+    }
+
+	private void SelectionChanged(CustomerInfo selectedItem)
+	{
+		if(selectedItem is CustomerInfo customerInfo)
+		{
+			this.selectedItem = customerInfo;
+		}
+		else
+		{
+			this.selectedItem = null;
+		}
+	}
+}
